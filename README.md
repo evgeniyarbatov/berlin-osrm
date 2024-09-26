@@ -1,11 +1,11 @@
-Download Berlin OSM:
+Download OSM:
 
 ```
 cd osm
 make
 ```
 
-Start OSRM
+Start OSRM:
 
 ```
 cd osrm

@@ -1,0 +1,28 @@
+services:
+  osrm:
+    image: osrm/osrm-backend
+    volumes:
+      - ../osm:/data
+      - ./profiles:/profiles
+    networks:
+      - default
+    ports:
+      - 6000:5000
+    restart: unless-stopped
+    command: >
+      bash -c "
+      osrm-extract -p /profiles/car.lua /data/berlin-latest.osm.pbf && 
+      osrm-partition /data/berlin-latest.osrm && 
+      osrm-customize /data/berlin-latest.osrm && 
+      osrm-routed \
+      --algorithm mld \
+      --max-matching-size 20000 \
+      --max-viaroute-size 20000 \
+      --max-trip-size 20000 \
+      --max-table-size 20000 \
+      /data/berlin-latest.osrm
+      "
+
+networks:
+  default:
+    driver: bridge
